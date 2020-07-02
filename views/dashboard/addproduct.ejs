@@ -1,0 +1,146 @@
+<%- include ('layout/header.ejs') %>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Create Product</h4>
+                    <p class="card-description">Product details </p>
+
+                    <form class="forms-sample" method="POST" enctype="multipart/form-data">
+                        <div class="form-group row mb-0">
+                            <div class="form-group col-8">
+                                <label for="exampleInputName1">Product Name</label>
+                                <input type="text" name="name" class="form-control" id="exampleInputName1"
+                                    placeholder="ProductName" value="<%= productData.name || '' %>">
+                                <% if (error.name) { %>
+                                <div class="text-danger"><small><%= error.name %></small></div>
+                                <% } %>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="exampleSelectGender">Type</label>
+                                <select class="form-control" name="type" id="exampleSelectGender">
+                                    <option value="">Select one</option>
+                                    <option value="diamond" <%= productData.type == 'diamond' ? 'selected' : '' %>>
+                                        Diamond</option>
+                                    <option value="stone" <%= productData.type == 'stone' ? 'selected' : '' %>>Stone
+                                    </option>
+                                </select>
+
+                                <% if (error.type) { %>
+                                <div class="text-danger"><small><%= error.type %></small></div>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <div class="form-group col-5">
+                                <label for="exampleInputEmail3">Price</label>
+                                <input type="number" value="<%= productData.price || '' %>" name="price"
+                                    class="form-control" id="exampleInputEmail3" placeholder="Price">
+
+                                <% if (error.price) { %>
+                                <div class="text-danger"><small><%= error.price %></small></div>
+                                <% } %>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="exampleInputPassword4">Old Price</label>
+                                <input type="number" value="<%= productData.oPrice || '' %>" name="oPrice"
+                                    class="form-control" id="exampleInputPassword4" placeholder="Old Price">
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="exampleSelectGender">Tag</label>
+                                <select class="form-control" name="tag" id="exampleSelectGender">
+                                    <option value="">Select one</option>
+                                    <option value="top" <%= productData.tag == 'top' ? 'selected' : '' %>>Top</option>
+                                    <option value="new" <%= productData.tag == 'new' ? 'selected' : '' %>>New</option>
+                                    <option value="sale" <%= productData.tag == 'sale' ? 'selected' : '' %>>Sale
+                                    </option>
+                                </select>
+
+                                <% if (error.tag) { %>
+                                <div class="text-danger"><small><%= error.tag %></small></div>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Image upload</label>
+                            <div class="input-group col-xs-12">
+                                <div class="images-preview mb-4">
+                                    <input type="hidden" id="removedImages" name="removedImages">
+                                    <% (productData.images || []).forEach(image => { %>
+                                    <div class="img-prev">
+                                        <button type="button" class="rem-img bg-danger">X</button>
+                                        <input type="file" name="images" class="d-none" accept="image">
+                                        <img src="<%= image %>" alt="">
+                                    </div>
+                                    <% }) %>
+        
+                                    <% for (let i = 0; i < 5 - (productData.images || []).length; i++) { %>
+                                    <div class="img-prev upload">
+                                        <button type="button" class="rem-img bg-danger d-none">X</button>
+                                        <input type="file" name="images" class="d-none" accept="image">
+                                        <img src="/img/upload.png" alt="">
+                                    </div>
+                                    <% } %>
+                                </div>
+                            </div>
+
+                            <% if (error.images) { %>
+                            <div class="text-danger"><small><%= error.images %></small></div>
+                            <% } %>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleTextarea1">Description</label>
+                            <textarea class="form-control" name="description" id="exampleTextarea1"
+                                rows="7"><%= productData.description || '' %></textarea>
+
+                            <% if (error.description) { %>
+                            <div class="text-danger"><small><%= error.description %></small></div>
+                            <% } %>
+                        </div>
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                        <button class="btn btn-light">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include ('layout/footer.ejs') %>
+<script>
+    //writin code for adding and removin image from dash board
+    $(document).ready(function () {
+        $('.img-prev.upload img').click(function (e) {
+            $(this).parent().find('input').click();
+        })
+        $('.img-prev.upload input').change(function (e) {
+            const imgPrev = $(this).parent();
+            const btn = $(imgPrev).find('button');
+
+            btn.click(remImg)
+            btn.removeClass('d-none');
+            imgPrev.removeClass('upload');
+            imgPrev.addClass('nImg');
+
+            const output = $(imgPrev).find('img');
+            output.attr('src', URL.createObjectURL(this.files[0]));
+
+            output.onload = function () {
+                URL.revokeObjectURL(output.attr('src'))
+            }
+        })
+
+        $('.rem-img').click(remImg)
+        function remImg(e) {
+            const imgPrev = $(this).closest('.img-prev');
+            const imgPath = imgPrev.find('img').attr('src');
+            const removedImagesVal = $('#removedImages').val() || '[]';
+            const removedImages = JSON.parse(removedImagesVal);
+            if (!imgPrev.hasClass('nImg')) removedImages.push(imgPath);
+            $('#removedImages').val(JSON.stringify(removedImages));
+            imgPrev.find('img').attr('src', '/img/upload.png');
+            imgPrev.addClass('upload');
+            $(imgPrev).find('button').addClass('d-none')
+        }
+    })
+</script>

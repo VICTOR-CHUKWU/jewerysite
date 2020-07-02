@@ -1,0 +1,69 @@
+<%- include ('layout/header.ejs') %>
+<section id="main" class="page-login">
+    <div class="container_12">
+        <div id="content" class="grid_12">
+            <header>
+                <h1 class="page_title">Login or Create an Account</h1>
+            </header>
+
+            <article>
+                <div class="grid_6 new_customers">
+                    <h2>Existing Customers</h2>
+                    <p>If you already have an account with us
+                    </p>
+                    <div class="clear"></div>
+                    <a href="/login"><button class="account">Login</button></a>
+                </div><!-- .grid_6 -->
+
+                <div class="grid_6 registed_form">
+                    <form method="POST" class="registed">
+                        <h2>New Customers</h2>
+                        <p>If you are new in our site, please Register here.</p>
+                        <div class="email">
+                            <strong>Email Adress:</strong><sup>*</sup><br>
+                            <input type="email" name="email" value="<%= userData.email || ''%>" class="" value="">
+                            <% if (error.email) { %>
+                                <div class="text-danger"><small><%= error.email %></small></div><br>
+                                <% } %>
+                        </div><!-- .email -->
+                        <div class="First Name">
+                            <strong>First Name</strong><sup>*</sup><br>
+                            <input type="text" name="firstName" value="<%= userData.firstName || ''%>" class="" value="">
+                            <% if (error.firstName) { %>
+                                <div class="text-danger"><small><%= error.firstName %></small></div><br>
+                                <% } %>
+                        </div><!-- .First-name -->
+                        <div class="Last Name">
+                            <strong>Last Name</strong><sup>*</sup><br>
+                            <input type="text" name="lastName" value="<%= userData.lastName || ''%>" class="" value="">
+                            <% if (error.lastName) { %>
+                                <div class="text-danger"><small><%= error.lastName %></small></div><br>
+                                <% } %>
+                        </div><!-- .Last-name -->
+                        <div class="password">
+                            <strong>Password:</strong><sup>*</sup><br>
+                            <input type="password" name="password" value="<%= userData.password || ''%>" class="" value="">
+                            <% if (error.password) { %>
+                                <div class="text-danger"><small><%= error.password %></small></div><br>
+                                <% } %>
+                        </div><!-- .password -->
+                        <div class="ReEnter-password">
+                            <strong>ReEnter-password:</strong><sup>*</sup><br>
+                            <input type="password" name="confirmPassword" class="" value="">
+                        </div><!-- .password -->
+                        <div class="submit">
+                            <input type="submit" value="register">
+                        </div><!-- .submit -->
+                    </form><!-- .registed -->
+                </div><!-- .grid_6 -->
+            </article>
+
+            <div class="clear"></div>
+        </div><!-- #content -->
+
+        <div class="clear"></div>
+    </div><!-- .container_12 -->
+</section><!-- #main -->
+<div class="clear"></div>
+
+<%- include ('layout/footer.ejs') %>

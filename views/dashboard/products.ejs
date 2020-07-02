@@ -1,0 +1,59 @@
+<%- include ('layout/header.ejs') %>
+
+    <div class="content-wrapper">
+            <div class="row">
+              <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-sm-flex align-items-center mb-4">
+                      <h4 class="card-title mb-sm-0">Products Inventory</h4>
+                    </div>
+                    
+                    <div class="table-responsive border rounded p-1">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="font-weight-bold">Product Name</th>
+                            <th class="font-weight-bold">Price</th>
+                            <th class="font-weight-bold">Tag</th>
+                            <th class="font-weight-bold">Type</th>
+                            <th class="font-weight-bold">Action</th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <% for (let i=0;i<gridData.length; i++){%>
+                          <tr>
+                            <td>
+                              <img class="img-sm rounded-circle" src="<%= gridData[i].images[0].path %>" alt="profile image"> <%= gridData[i].name %></td>
+                            <td>$<%= gridData[i].price %></td>
+                            <td><%= gridData[i].tag %></td>
+                            <td><%= gridData[i].type %></td>
+                            <td>
+                                <a href="/dashboard/products/edit/<%= gridData[i].slug %>" class="badge badge-primary p-2">Edit</a>
+                                <span class="badge badge-danger p-2">Delete</span>
+                            </td>
+                          </tr>
+                          <%}%>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="d-flex mt-4 flex-wrap">
+                      <p class="text-muted">Showing 1 to 10 of 57 entries</p>
+                      <nav class="ml-auto">
+                        <ul class="pagination separated pagination-info">
+                          <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-left"></i></a></li>
+                          <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                          <li class="page-item"><a href="#" class="page-link">2</a></li>
+                          <li class="page-item"><a href="#" class="page-link">3</a></li>
+                          <li class="page-item"><a href="#" class="page-link">4</a></li>
+                          <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-right"></i></a></li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          <%- include ('layout/footer.ejs') %>
